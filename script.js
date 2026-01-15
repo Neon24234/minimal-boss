@@ -30,15 +30,15 @@ async function loadTodos() {
 
     list.innerHTML = '';
 
-    todos.forEach(todo => {
-        const li = document.createElement('li');
-        li.textContent = todo.title;
+   todos.forEach(todo => {
+    const li = document.createElement('li');
 
-        if (todo.done == 1) {
-            li.classList.add('done');
-        }
+    const isDone = Number(todo.completed) === 1;
+    const icon = isDone ? '✔' : '✖';
 
-        list.appendChild(li);
-    });
+    li.textContent = `${icon} ${todo.title}`;
+    list.appendChild(li);
+});
+
 }
 
