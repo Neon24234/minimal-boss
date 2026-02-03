@@ -69,10 +69,7 @@ async function loadTodos() {
                     title: newTitle
                 })
             });
-
-            const result = await response.text();
-            console.log(result);
-
+            
             loadTodos();
         }
     });
@@ -80,6 +77,8 @@ async function loadTodos() {
     li.appendChild(text);
     li.appendChild(button);
     list.appendChild(li);
+    
+
 });
 
 }
