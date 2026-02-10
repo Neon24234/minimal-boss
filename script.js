@@ -34,7 +34,8 @@ async function loadTodos() {
 
   list.innerHTML = ""
 
-  todos.forEach((todo, index) => { // index a sorszámhoz
+  // index a sorszámhoz
+  todos.forEach((todo, index) => {
     const li = document.createElement("li")
 
     const isDone = Number(todo.completed) === 1
@@ -89,7 +90,7 @@ async function loadTodos() {
 
     // sorszám span hozzáadása
     const numberSpan = document.createElement("span")
-    numberSpan.textContent = (index + 1) + ". "
+    numberSpan.textContent = index + 1 + ". "
     numberSpan.style.marginRight = "6px"
     numberSpan.style.fontWeight = "bold"
 
@@ -118,9 +119,7 @@ document.addEventListener("keydown", (e) => {
   if (!item) return
 
   // korábbi kijelölés törlése
-  document.querySelectorAll("#todo-list li").forEach(li =>
-    li.classList.remove("selected")
-  )
+  document.querySelectorAll("#todo-list li").forEach((li) => li.classList.remove("selected"))
 
   // kiválasztott elem kiemelése
   item.classList.add("selected")
