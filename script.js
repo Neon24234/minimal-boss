@@ -17,9 +17,7 @@ form.addEventListener("submit", async (e) => {
 
   await fetch("db-insert.php", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title }),
   })
 
@@ -36,7 +34,8 @@ async function loadTodos() {
 
   list.innerHTML = ""
 
-  todos.forEach((todo) => {
+  // index a sorszámhoz
+  todos.forEach((todo, index) => {
     const li = document.createElement("li")
 
     const isDone = Number(todo.completed) === 1
@@ -67,28 +66,21 @@ async function loadTodos() {
         const input = li.querySelector("input")
         const newTitle = input.value
 
-        const response = await fetch("db-update.php", {
+        await fetch("db-update.php", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: todo.id,
-            title: newTitle,
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: todo.id, title: newTitle }),
         })
 
         loadTodos()
       }
     })
+
     iconSpan.addEventListener("click", async () => {
       await fetch("toggle.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: todo.id,
-          completed: isDone ? 0 : 1,
-        }),
+        body: JSON.stringify({ id: todo.id, completed: isDone ? 0 : 1 }),
       })
       loadTodos()
     })
@@ -96,6 +88,13 @@ async function loadTodos() {
     const titleSpan = document.createElement("span")
     titleSpan.textContent = todo.title
 
+    // sorszám span hozzáadása
+    const numberSpan = document.createElement("span")
+    numberSpan.textContent = index + 1 + ". "
+    numberSpan.style.marginRight = "6px"
+    numberSpan.style.fontWeight = "bold"
+
+    li.appendChild(numberSpan)
     li.appendChild(iconSpan)
     li.appendChild(titleSpan)
     li.appendChild(button)
@@ -103,3 +102,25 @@ async function loadTodos() {
     list.appendChild(li)
   })
 }
+
+/* ÚJ: billentyűzetes 1–10 kijelölés */
+document.addEventListener("keydown", (e) => {
+  let index
+
+  if (e.key === "0") {
+    index = 9 // 0 = 10. elem
+  } else if (e.key >= "1" && e.key <= "9") {
+    index = Number(e.key) - 1
+  } else {
+    return // más gomb nem érdekel
+  }
+
+  const item = list.children[index]
+  if (!item) return
+
+  // korábbi kijelölés törlése
+  document.querySelectorAll("#todo-list li").forEach((li) => li.classList.remove("selected"))
+
+  // kiválasztott elem kiemelése
+  item.classList.add("selected")
+})

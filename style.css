@@ -124,3 +124,9 @@ button{
   font-size: 15px;
   cursor: pointer;
 }
+
+/* Kiemelés a billentyűzetes 1–10 kijelöléshez */
+#todo-list li.selected {
+  background-color: rgba(30, 58, 138, 0.15); /* halvány kék háttér */
+  border-radius: 6px;
+}
